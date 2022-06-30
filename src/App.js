@@ -1,10 +1,16 @@
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header';
+import Layout from './components/Layout';
+import Home from './pages/Home/Home';
 
 function App() {
   return (
     <section className="App">
-      <Header />
+      <Layout>
+        <Routes>
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </Layout>
     </section>
   );
 }
