@@ -1,9 +1,12 @@
 import React from 'react';
+import BillingTable from './BillingTable';
+import TableActionBar from './TableActionBar';
 
 const Home = () => {
     return (
         <section>
-            <p>hello from home</p>
+            <TableActionBar />
+            <BillingTable />
         </section>
     );
 };
