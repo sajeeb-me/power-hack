@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
@@ -7,11 +7,10 @@ const Header = () => {
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-                <Nav className="me-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#features">Features</Nav.Link>
-                    <Nav.Link href="#pricing">Pricing</Nav.Link>
+                <Navbar.Brand href="#home">Power Hack</Navbar.Brand>
+                <Nav>
+                    <Nav.Link href="#home">Paid Total : 00</Nav.Link>
+                    <Nav.Link href="#features">Log out</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
