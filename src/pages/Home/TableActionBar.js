@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-const TableActionBar = () => {
+const TableActionBar = ({ handleShow }) => {
     return (
         <section className='d-flex justify-content-between px-5 py-2 my-3 bg-light container rounded'>
             <article className='d-flex align-items-center gap-3'>
@@ -9,7 +9,9 @@ const TableActionBar = () => {
                 <input type="text" name="searchBar" id="searchBar" placeholder='Search' className='p-1 rounded' />
             </article>
             <article>
-                <Button variant="primary">Add New Bill</Button>
+                <Button variant="primary" onClick={handleShow}>
+                    Add New Bill
+                </Button>
             </article>
         </section>
     );
