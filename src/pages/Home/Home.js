@@ -25,7 +25,7 @@ const Home = () => {
 
     useEffect(() => {
         (async () => {
-            const { data } = await axios.get(`http://localhost:5000/api/billing-list?page=${page}&size=${size}`)
+            const { data } = await axios.get(`https://upper-lumberjack-28379.herokuapp.com/api/billing-list?page=${page}&size=${size}`)
             const bills = data.data
             // console.log(bills);
             const match = bills.filter(bill => (bill.fullName).toLowerCase().includes((searchedText).toLowerCase()) || (bill.email).toLowerCase().includes((searchedText).toLowerCase()))
@@ -34,7 +34,7 @@ const Home = () => {
     }, [page, searchedText, billings])
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/billing-count')
+        fetch('https://upper-lumberjack-28379.herokuapp.com/api/billing-count')
             .then(res => res.json())
             .then(data => {
                 const count = data.totalBill;

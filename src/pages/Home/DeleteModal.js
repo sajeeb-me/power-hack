@@ -11,7 +11,7 @@ const DeleteModal = ({ dltModalShow, deleteModalClose, id, setId }) => {
 
     const handleDelete = id => {
         (async () => {
-            const { data } = await axios.delete(`http://localhost:5000/api/delete-billing/${id}`)
+            const { data } = await axios.delete(`https://upper-lumberjack-28379.herokuapp.com/api/delete-billing/${id}`)
             const remaining = billings.filter(billing => billing._id !== id)
             setBillings(remaining)
             deleteModalClose()

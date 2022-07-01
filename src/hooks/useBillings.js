@@ -6,7 +6,7 @@ const useBillings = () => {
 
     useEffect(() => {
         (async () => {
-            const { data } = await axios.get('http://localhost:5000/api/billing-list')
+            const { data } = await axios.get('https://upper-lumberjack-28379.herokuapp.com/api/billing-list')
             // console.log(data)
             setBillings(data.data)
         })()

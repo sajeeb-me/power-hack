@@ -24,7 +24,7 @@ const BillingModal = ({ handleClose, show, id, setId }) => {
         id ?
             (async () => {
                 // console.log(id)
-                const { data } = await axios.patch(`http://localhost:5000/api/update-billing/${id}`, newBill)
+                const { data } = await axios.patch(`https://upper-lumberjack-28379.herokuapp.com/api/update-billing/${id}`, newBill)
                 if (!data.success) {
                     reset()
                     handleClose()
@@ -46,7 +46,7 @@ const BillingModal = ({ handleClose, show, id, setId }) => {
                         ...newBill
                     }
                     // console.log(generateBill);
-                    const { data } = await axios.post('http://localhost:5000/api/add-billing', generateBill)
+                    const { data } = await axios.post('https://upper-lumberjack-28379.herokuapp.com/api/add-billing', generateBill)
                     if (!data.success) {
                         reset()
                         handleClose()
