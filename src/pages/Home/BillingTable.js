@@ -4,8 +4,9 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
 
-const BillingTable = ({ handleShow, setId }) => {
+const BillingTable = ({ handleShow, setId, deleteModalShow }) => {
     const [billings, setBillings] = useState([])
+
     useEffect(() => {
         (async () => {
             const { data } = await axios.get('http://localhost:5000/api/billing-list')
@@ -16,6 +17,10 @@ const BillingTable = ({ handleShow, setId }) => {
     const handleEdit = id => {
         setId(id);
         handleShow()
+    }
+    const handleDelete = id => {
+        setId(id);
+        deleteModalShow()
     }
 
     return (
@@ -43,7 +48,7 @@ const BillingTable = ({ handleShow, setId }) => {
                                 <td>
                                     <Button variant="link" onClick={() => handleEdit(billing._id)}>Edit</Button>
                                     |
-                                    <Button variant="link">Delete</Button>
+                                    <Button variant="link" onClick={() => handleDelete(billing._id)}>Delete</Button>
                                 </td>
                             </tr>
                         )

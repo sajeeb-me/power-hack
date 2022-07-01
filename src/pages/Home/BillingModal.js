@@ -17,12 +17,13 @@ const BillingModal = ({ handleClose, show, id, setId }) => {
                 if (!data.success) {
                     reset()
                     handleClose()
+                    setId('')
                     return
                 }
                 reset()
                 handleClose()
                 setId('')
-                toast.success('updated successfully')
+                toast.success('Updated successfully')
             })()
             :
             (async () => {
@@ -31,6 +32,7 @@ const BillingModal = ({ handleClose, show, id, setId }) => {
                 if (!data.success) {
                     reset()
                     handleClose()
+                    setId('')
                     return
                 }
                 reset()
