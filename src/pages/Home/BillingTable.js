@@ -4,7 +4,7 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
 
-const BillingTable = () => {
+const BillingTable = ({ handleShow, setId }) => {
     const [billings, setBillings] = useState([])
     useEffect(() => {
         (async () => {
@@ -13,6 +13,10 @@ const BillingTable = () => {
         })()
     }, [billings])
 
+    const handleEdit = id => {
+        setId(id);
+        handleShow()
+    }
 
     return (
         <section className='container rounded'>
@@ -37,7 +41,7 @@ const BillingTable = () => {
                                 <td>{billing.phone}</td>
                                 <td>{billing.amount}</td>
                                 <td>
-                                    <Button variant="link">Edit</Button>
+                                    <Button variant="link" onClick={() => handleEdit(billing._id)}>Edit</Button>
                                     |
                                     <Button variant="link">Delete</Button>
                                 </td>

@@ -5,20 +5,40 @@ import { useForm } from "react-hook-form";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const BillingModal = ({ handleClose, show }) => {
+const BillingModal = ({ handleClose, show, id, setId }) => {
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
 
-    const onSubmit = async (newBill) => {
-        const { data } = await axios.post('http://localhost:5000/api/add-billing', newBill)
-        if (!data.success) {
-            reset()
-            handleClose()
-            return
-        }
-        reset()
-        handleClose()
-        toast.success(data.message)
-    };
+
+    const onSubmit = (newBill) => {
+        id ?
+            (async () => {
+                // console.log(id)
+                const { data } = await axios.patch(`http://localhost:5000/api/update-billing/${id}`, newBill)
+                if (!data.success) {
+                    reset()
+                    handleClose()
+                    return
+                }
+                reset()
+                handleClose()
+                setId('')
+                toast.success('updated successfully')
+            })()
+            :
+            (async () => {
+                // console.log("id nai")
+                const { data } = await axios.post('http://localhost:5000/api/add-billing', newBill)
+                if (!data.success) {
+                    reset()
+                    handleClose()
+                    return
+                }
+                reset()
+                handleClose()
+                setId('')
+                toast.success(data.message)
+            })()
+    }
     return (
         <>
             <Modal
@@ -28,12 +48,12 @@ const BillingModal = ({ handleClose, show }) => {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Add New Bill</Modal.Title>
+                    <Modal.Title>Billing Details</Modal.Title>
                 </Modal.Header>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Modal.Body>
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label d-block">Full name</label>
+                        <div className="mb-3">
+                            <label htmlFor="fullName" className="form-label d-block">Full name</label>
                             <input
                                 type='text'
                                 className={`${errors.fullName && 'border border-danger'} w-100 p-1 rounded`}
@@ -41,11 +61,11 @@ const BillingModal = ({ handleClose, show }) => {
                             />
                             {
                                 errors.fullName?.type === 'required' &&
-                                <div class="form-text text-danger">Full name is required</div>
+                                <div className="form-text text-danger">Full name is required</div>
                             }
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label d-block">Email address</label>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label d-block">Email address</label>
                             <input
                                 type='email'
                                 className={`${errors.email && 'border border-danger'} w-100 p-1 rounded`}
@@ -53,11 +73,11 @@ const BillingModal = ({ handleClose, show }) => {
                             />
                             {
                                 errors.email?.type === 'required' &&
-                                <div class="form-text text-danger">Email is required</div>
+                                <div className="form-text text-danger">Email is required</div>
                             }
                         </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label d-block">Phone</label>
+                        <div className="mb-3">
+                            <label htmlFor="phone" className="form-label d-block">Phone</label>
                             <input
                                 type='text'
                                 className={`${errors.phone && 'border border-danger'} w-100 p-1 rounded`}
@@ -65,11 +85,11 @@ const BillingModal = ({ handleClose, show }) => {
                             />
                             {
                                 errors.phone?.type === 'required' &&
-                                <div class="form-text text-danger">Phone number is required</div>
+                                <div className="form-text text-danger">Phone number is required</div>
                             }
                         </div>
-                        <div class="mb-3">
-                            <label for="amount" class="form-label d-block">Paid amount</label>
+                        <div className="mb-3">
+                            <label htmlFor="amount" className="form-label d-block">Paid amount</label>
                             <input
                                 type='number'
                                 className={`${errors.amount && 'border border-danger'} w-100 p-1 rounded`}
@@ -77,7 +97,7 @@ const BillingModal = ({ handleClose, show }) => {
                             />
                             {
                                 errors.amount?.type === 'required' &&
-                                <div class="form-text text-danger">Paid amount is required</div>
+                                <div className="form-text text-danger">Paid amount is required</div>
                             }
                         </div>
 
@@ -87,7 +107,7 @@ const BillingModal = ({ handleClose, show }) => {
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button as="input" type="submit" value="Add Bill" />
+                        <Button as="input" type="submit" value="Submit" />
                     </Modal.Footer>
                 </form>
             </Modal>

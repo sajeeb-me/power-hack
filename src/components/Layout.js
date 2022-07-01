@@ -5,9 +5,9 @@ const Layout = ({ children }) => {
     return (
         <section>
             <Header />
-            <body>
+            <section>
                 {children}
-            </body>
+            </section>
         </section>
     );
 };
