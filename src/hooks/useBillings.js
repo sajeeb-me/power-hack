@@ -7,9 +7,10 @@ const useBillings = () => {
     useEffect(() => {
         (async () => {
             const { data } = await axios.get('http://localhost:5000/api/billing-list')
+            // console.log(data)
             setBillings(data.data)
         })()
-    }, [billings])
+    }, [])
     return [billings, setBillings]
 };
 

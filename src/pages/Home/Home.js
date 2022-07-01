@@ -18,10 +18,26 @@ const Home = () => {
 
     return (
         <section>
-            <TableActionBar handleShow={handleShow} />
-            <BillingTable handleShow={handleShow} setId={setId} deleteModalShow={deleteModalShow} />
-            <BillingModal handleClose={handleClose} show={show} id={id} setId={setId} />
-            <DeleteModal deleteModalClose={deleteModalClose} dltModalShow={dltModalShow} id={id} setId={setId} />
+            <TableActionBar
+                handleShow={handleShow}
+            />
+            <BillingTable
+                handleShow={handleShow}
+                setId={setId}
+                deleteModalShow={deleteModalShow}
+            />
+            <BillingModal
+                handleClose={handleClose}
+                show={show}
+                id={id}
+                setId={setId}
+            />
+            <DeleteModal
+                deleteModalClose={deleteModalClose}
+                dltModalShow={dltModalShow}
+                id={id}
+                setId={setId}
+            />
         </section>
     );
 };

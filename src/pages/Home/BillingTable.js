@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
-
+import axios from 'axios';
 import Button from 'react-bootstrap/Button';
-import useBillings from '../../hooks/useBillings';
 
 
-const BillingTable = ({ handleShow, setId, deleteModalShow }) => {
-    const [billings] = useBillings();
+const BillingTable = ({ handleShow, setId, deleteModalShow, }) => {
+    const [billings, setBillings] = useState([])
+    const [page, setPage] = useState(0);
+    const [pageCount, setPageCount] = useState(0);
+    const size = 10;
+
+    useEffect(() => {
+        (async () => {
+            const { data } = await axios.get(`http://localhost:5000/api/billing-list?page=${page}&size=${size}`)
+            // console.log(data)
+            setBillings(data.data)
+        })()
+    }, [page, billings])
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/billing-count')
+            .then(res => res.json())
+            .then(data => {
+                const count = data.totalBill;
+                const pages = Math.ceil(count / size);
+                setPageCount(pages)
+            })
+    }, [size])
 
     const handleEdit = id => {
         setId(id);
@@ -50,6 +70,14 @@ const BillingTable = ({ handleShow, setId, deleteModalShow }) => {
 
                 </tbody>
             </Table>
+            <div className='mb-5'>
+                {
+                    [...Array(pageCount).keys()]
+                        .map(number => <Button key={number} variant={number === page ? 'primary' : 'outline-secondary'} className='mx-1' onClick={() => setPage(number)}>
+                            {number + 1}
+                        </Button>)
+                }
+            </div>
         </section>
     );
 };
