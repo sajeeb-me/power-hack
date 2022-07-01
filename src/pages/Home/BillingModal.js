@@ -2,12 +2,22 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useForm } from "react-hook-form";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const BillingModal = ({ handleClose, show }) => {
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const { register, formState: { errors }, handleSubmit, reset } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (newBill) => {
+        const { data } = await axios.post('http://localhost:5000/api/add-billing', newBill)
+        if (!data.success) {
+            reset()
+            handleClose()
+            return
+        }
+        reset()
+        handleClose()
+        toast.success(data.message)
     };
     return (
         <>
@@ -18,10 +28,10 @@ const BillingModal = ({ handleClose, show }) => {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Add New Bill</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Modal.Body>
                         <div class="mb-3">
                             <label for="fullName" class="form-label d-block">Full name</label>
                             <input
@@ -72,15 +82,14 @@ const BillingModal = ({ handleClose, show }) => {
                         </div>
 
 
-                        <input type="submit" />
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary">Understood</Button>
-                </Modal.Footer>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button as="input" type="submit" value="Add Bill" />
+                    </Modal.Footer>
+                </form>
             </Modal>
         </>
     );

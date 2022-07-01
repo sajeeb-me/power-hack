@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+
 
 const BillingTable = () => {
+    const [billings, setBillings] = useState([])
+    useEffect(() => {
+        (async () => {
+            const { data } = await axios.get('http://localhost:5000/api/billing-list')
+            setBillings(data.data)
+        })()
+    }, [billings])
+
+
     return (
         <section className='container rounded'>
             <Table striped bordered hover >
@@ -16,54 +28,23 @@ const BillingTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
+                    {
+                        billings.map((billing, index) =>
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{billing.fullName}</td>
+                                <td>{billing.email}</td>
+                                <td>{billing.phone}</td>
+                                <td>{billing.amount}</td>
+                                <td>
+                                    <Button variant="link">Edit</Button>
+                                    |
+                                    <Button variant="link">Delete</Button>
+                                </td>
+                            </tr>
+                        )
+                    }
+
                 </tbody>
             </Table>
         </section>
