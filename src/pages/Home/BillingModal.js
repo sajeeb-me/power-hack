@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useForm } from "react-hook-form";
@@ -6,7 +6,19 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const BillingModal = ({ handleClose, show, id, setId }) => {
+    const [billingId, setBillingId] = useState('')
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
+
+    const generateBillingId = () => {
+        const num = Math.round(Math.random() * 10000);
+        const numString = num + '';
+        if (numString.length === 4) {
+            setBillingId(num);
+        }
+        else {
+            return generateBillingId();
+        }
+    }
 
     const onSubmit = (newBill) => {
         id ?
@@ -27,17 +39,25 @@ const BillingModal = ({ handleClose, show, id, setId }) => {
             :
             (async () => {
                 // console.log("id nai")
-                const { data } = await axios.post('http://localhost:5000/api/add-billing', newBill)
-                if (!data.success) {
+                await generateBillingId()
+                if (billingId) {
+                    const generateBill = {
+                        billingId,
+                        ...newBill
+                    }
+                    // console.log(generateBill);
+                    const { data } = await axios.post('http://localhost:5000/api/add-billing', generateBill)
+                    if (!data.success) {
+                        reset()
+                        handleClose()
+                        setId('')
+                        return
+                    }
                     reset()
                     handleClose()
                     setId('')
-                    return
+                    toast.success(data.message)
                 }
-                reset()
-                handleClose()
-                setId('')
-                toast.success(data.message)
             })()
     }
     return (

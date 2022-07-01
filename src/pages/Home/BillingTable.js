@@ -54,7 +54,7 @@ const BillingTable = ({ handleShow, setId, deleteModalShow, }) => {
                     {
                         billings.map((billing, index) =>
                             <tr key={index}>
-                                <td>{index + 1}</td>
+                                <td>{billing.billingId}</td>
                                 <td>{billing.fullName}</td>
                                 <td>{billing.email}</td>
                                 <td>{billing.phone}</td>
