@@ -3,14 +3,17 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import useBillings from '../../hooks/useBillings';
 
 
 const DeleteModal = ({ dltModalShow, deleteModalClose, id, setId }) => {
+    const [billings, setBillings] = useBillings();
 
     const handleDelete = id => {
         (async () => {
-            console.log(id)
             const { data } = await axios.delete(`http://localhost:5000/api/delete-billing/${id}`)
+            const remaining = billings.filter(billing => billing._id !== id)
+            setBillings(remaining)
             deleteModalClose()
             setId('')
             toast.warning(data.message)
@@ -35,7 +38,7 @@ const DeleteModal = ({ dltModalShow, deleteModalClose, id, setId }) => {
                     <Button variant="secondary" onClick={deleteModalClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleDelete(id)}>Confirm</Button>
+                    <Button variant="danger" onClick={() => handleDelete(id)}>Confirm</Button>
                 </Modal.Footer>
             </Modal>
         </>

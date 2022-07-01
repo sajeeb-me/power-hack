@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
-import axios from 'axios';
+
 import Button from 'react-bootstrap/Button';
+import useBillings from '../../hooks/useBillings';
 
 
 const BillingTable = ({ handleShow, setId, deleteModalShow }) => {
-    const [billings, setBillings] = useState([])
-
-    useEffect(() => {
-        (async () => {
-            const { data } = await axios.get('http://localhost:5000/api/billing-list')
-            setBillings(data.data)
-        })()
-    }, [billings])
+    const [billings] = useBillings();
 
     const handleEdit = id => {
         setId(id);
@@ -46,9 +40,9 @@ const BillingTable = ({ handleShow, setId, deleteModalShow }) => {
                                 <td>{billing.phone}</td>
                                 <td>{billing.amount}</td>
                                 <td>
-                                    <Button variant="link" onClick={() => handleEdit(billing._id)}>Edit</Button>
+                                    <Button variant="link" className='text-decoration-none' onClick={() => handleEdit(billing._id)}>Edit</Button>
                                     |
-                                    <Button variant="link" onClick={() => handleDelete(billing._id)}>Delete</Button>
+                                    <Button variant="link" className='text-danger text-decoration-none' onClick={() => handleDelete(billing._id)}>Delete</Button>
                                 </td>
                             </tr>
                         )
