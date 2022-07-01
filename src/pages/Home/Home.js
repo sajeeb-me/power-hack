@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BillingTable from './BillingTable';
 import TableActionBar from './TableActionBar';
+import axios from 'axios';
 
 import BillingModal from './BillingModal';
 import DeleteModal from './DeleteModal';
@@ -16,15 +17,46 @@ const Home = () => {
     const deleteModalShow = () => setDltModalShow(true);
     const deleteModalClose = () => setDltModalShow(false);
 
+    const [billings, setBillings] = useState([])
+    const [page, setPage] = useState(0);
+    const [pageCount, setPageCount] = useState(0);
+    const [searchedText, setSearchedText] = useState('');
+    const size = 10;
+
+    useEffect(() => {
+        (async () => {
+            const { data } = await axios.get(`http://localhost:5000/api/billing-list?page=${page}&size=${size}`)
+            const bills = data.data
+            // console.log(bills);
+            const match = bills.filter(bill => (bill.fullName).toLowerCase().includes((searchedText).toLowerCase()) || (bill.email).toLowerCase().includes((searchedText).toLowerCase()))
+            setBillings(match)
+        })()
+    }, [page, searchedText, billings])
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/billing-count')
+            .then(res => res.json())
+            .then(data => {
+                const count = data.totalBill;
+                const pages = Math.ceil(count / size);
+                setPageCount(pages)
+            })
+    }, [size])
+
     return (
         <section>
             <TableActionBar
                 handleShow={handleShow}
+                setSearchedText={setSearchedText}
             />
             <BillingTable
+                billings={billings}
                 handleShow={handleShow}
                 setId={setId}
                 deleteModalShow={deleteModalShow}
+                page={page}
+                setPage={setPage}
+                pageCount={pageCount}
             />
             <BillingModal
                 handleClose={handleClose}

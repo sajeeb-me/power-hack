@@ -1,32 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
-import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
 
-const BillingTable = ({ handleShow, setId, deleteModalShow, }) => {
-    const [billings, setBillings] = useState([])
-    const [page, setPage] = useState(0);
-    const [pageCount, setPageCount] = useState(0);
-    const size = 10;
+const BillingTable = ({ billings, handleShow, setId, deleteModalShow, page, pageCount, setPage }) => {
 
-    useEffect(() => {
-        (async () => {
-            const { data } = await axios.get(`http://localhost:5000/api/billing-list?page=${page}&size=${size}`)
-            // console.log(data)
-            setBillings(data.data)
-        })()
-    }, [page, billings])
-
-    useEffect(() => {
-        fetch('http://localhost:5000/api/billing-count')
-            .then(res => res.json())
-            .then(data => {
-                const count = data.totalBill;
-                const pages = Math.ceil(count / size);
-                setPageCount(pages)
-            })
-    }, [size])
 
     const handleEdit = id => {
         setId(id);
