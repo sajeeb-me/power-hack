@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <Navbar bg="primary" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">Power Hack</Navbar.Brand>
+                <Navbar.Brand as={Link} to='/'>Power Hack</Navbar.Brand>
                 <Nav>
                     <Nav.Link href="#home">Paid Total : 00</Nav.Link>
                     <Nav.Link as={Link} to='/login'>Login</Nav.Link>
