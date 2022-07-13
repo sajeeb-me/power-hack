@@ -1,7 +1,37 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 function Signup() {
+    const navigate = useNavigate()
+    const { register, formState: { errors }, handleSubmit } = useForm();
+
+    const onSubmit = async (data) => {
+        // const email = data.email;
+        const user = data;
+        if (user) {
+            fetch('http://localhost:5000/signup', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(user),
+            })
+                .then(res => {
+                    console.log(res);
+                    if (res.status === 500) {
+                        toast.error('User already exist!')
+                    }
+                    return res.json()
+                })
+                .then(data => {
+                    console.log(data);
+                    navigate('/');
+                })
+        }
+    };
+
     return (
         // <!-- Section: Design Block -->
         <section className="text-center">
@@ -27,33 +57,53 @@ function Signup() {
                     <div className="row d-flex justify-content-center">
                         <div className="col-lg-8">
                             <h2 className="fw-bold mb-5">Sign up now</h2>
-                            <form>
+                            <form onSubmit={handleSubmit(onSubmit)}>
                                 {/* <!-- 2 column grid layout with text inputs for the first and last names --> */}
                                 <div className="row">
                                     <div className="col-md-6 mb-4">
-                                        <div className="form-outline">
-                                            <input type="text" id="form3Example1" className="form-control" />
-                                            <label className="form-label" htmlFor="form3Example1">First name</label>
+                                        <div className="form-outline text-start">
+                                            <label className="form-label ps-1">First name</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                {...register("firstName", { required: true })}
+                                            />
+                                            <span className='text-danger'>{errors.firstName?.type === 'required' && "First name is required"}</span>
                                         </div>
                                     </div>
                                     <div className="col-md-6 mb-4">
-                                        <div className="form-outline">
-                                            <input type="text" id="form3Example2" className="form-control" />
-                                            <label className="form-label" htmlFor="form3Example2">Last name</label>
+                                        <div className="form-outline text-start">
+                                            <label className="form-label ps-1">Last name</label>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                {...register("lastName", { required: true })}
+                                            />
+                                            <span className='text-danger'>{errors.lastName?.type === 'required' && "Last name is required"}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* <!-- Email input --> */}
-                                <div className="form-outline mb-4">
-                                    <input type="email" id="form3Example3" className="form-control" />
-                                    <label className="form-label" htmlFor="form3Example3">Email address</label>
+                                <div className="form-outline mb-4 text-start">
+                                    <label className="form-label ps-1">Email address</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        {...register("email", { required: true })}
+                                    />
+                                    <span className='text-danger'>{errors.email?.type === 'required' && "Email address is required"}</span>
                                 </div>
 
                                 {/* <!-- Password input --> */}
-                                <div className="form-outline mb-4">
-                                    <input type="password" id="form3Example4" className="form-control" />
-                                    <label className="form-label" htmlFor="form3Example4">Password</label>
+                                <div className="form-outline mb-4 text-start">
+                                    <label className="form-label ps-1">Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        {...register("password", { required: true })}
+                                    />
+                                    <span className='text-danger'>{errors.password?.type === 'required' && "Password is required"}</span>
                                 </div>
 
                                 {/* <!-- Submit button --> */}
